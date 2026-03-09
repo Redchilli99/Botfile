@@ -1,5 +1,5 @@
-python-telegram-bot
-motor
-dnspython
-flask
-
+python-telegram-bot==21.3
+flask==3.0.0
+motor==3.4.1
+pymongo==4.7.2
+python-dotenv==1.0.0
