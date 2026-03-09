@@ -95,8 +95,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         kb.append([InlineKeyboardButton("⚙️ Admin Panel", callback_data="admin")])
     
     await update.message.reply_text(
-        f"👋 Welcome {update.effective_user.first_name}!
-\n📂 Share and manage files easily.",
+        f"👋 Welcome {update.effective_user.first_name}!\n📂 Share and manage files easily.",
         reply_markup=InlineKeyboardMarkup(kb)
     )
 
@@ -135,11 +134,11 @@ async def browse_files(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     keyboard = []
     files_per_page = 5
-    start = page * files_per_page
-    end = start + files_per_page
+    start_idx = page * files_per_page
+    end_idx = start_idx + files_per_page
     total = len(files)
     
-    for f in files[start:end]:
+    for f in files[start_idx:end_idx]:
         stats = await db.stats.find_one({"file_id": f['file_id']}) or {}
         downloads = stats.get('download_count', 0)
         btn_text = f"📁 {f['file_name'][:25]} [{downloads}]"
@@ -148,7 +147,7 @@ async def browse_files(update: Update, context: ContextTypes.DEFAULT_TYPE):
     nav_buttons = []
     if page > 0:
         nav_buttons.append(InlineKeyboardButton("⬅️ Prev", callback_data=f"browse_{page-1}"))
-    if end < total:
+    if end_idx < total:
         nav_buttons.append(InlineKeyboardButton("Next ➡️", callback_data=f"browse_{page+1}"))
     if nav_buttons:
         keyboard.append(nav_buttons)
